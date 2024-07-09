@@ -1,318 +1,331 @@
 {% extends "partials/base.html" %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h2 class="text-center">Process Data Chart</h2>
-
-
-
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Chart</h3>
-                    </div>
-                    <div class="card-body" style="height: 80vh;">
-                        <canvas id="myChart" style="height: 100%; width: 100%;"></canvas>
-                    </div>
-                    <div class="card-footer text-center">
-                        <button id="prev-page" class="btn btn-outline-primary me-2">Previous</button>
-                        <span id="page-info" class="me-2"></span>
-                        <button id="next-page" class="btn btn-outline-primary">Next</button>
-                    </div>
+<div class="container mt-5">
+    <h2 class="text-center">Process Data Chart</h2>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info text-center">
+                Batch Number: {{ batch_no }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Chart</h3>
+                </div>
+                <div class="card-body" style="height: 80vh;">
+                    <canvas id="myChart" style="height: 100%; width: 100%;"></canvas>
+                </div>
+                <div class="card-footer text-center">
+                    <button id="prev-page" class="btn btn-outline-primary me-2">Previous</button>
+                    <span id="page-info" class="me-2"></span>
+                    <button id="next-page" class="btn btn-outline-primary">Next</button>
+                    <button id="zoom-in" class="btn btn-outline-secondary ms-2">Zoom In</button>
+                    <button id="zoom-out" class="btn btn-outline-secondary ms-2">Zoom Out</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Add Data</h3>
-                </div>
-                <div class="card-body">
-                    <form id="dataForm">
-                        <div class="mb-3">
-                            <label for="labelInput" class="form-label">Label</label>
-                            <input type="text" class="form-control" id="labelInput" placeholder="Enter label">
-                        </div>
-                        <div class="mb-3">
-                            <label for="valueInput" class="form-label">Value</label>
-                            <input type="number" class="form-control" id="valueInput" placeholder="Enter value">
-                        </div>
-                        <button type="button" class="btn btn-primary w-100" onclick="addData()">Add Data</button>
-                    </form>
-                </div>
-            </div>
-        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Reactor Pressure',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        pointBorderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Reactor Temperature',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                        pointBorderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Hot Oil In Target Temperature',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(153, 102, 255, 1)',
-                        pointBorderColor: 'rgba(153, 102, 255, 1)',
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Hot Oil In Temperature',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 159, 64, 1)',
-                        pointBorderColor: 'rgba(255, 159, 64, 1)',
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Hot Oil Out Temperature',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 206, 86, 1)',
-                        pointBorderColor: 'rgba(255, 206, 86, 1)',
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Reactor Target Temperature',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                        pointBorderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Stirrer Target Speed',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                        pointBorderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Stirrer Speed',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        pointBorderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Homogenizer Target Speed',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(153, 102, 255, 1)',
-                        pointBorderColor: 'rgba(153, 102, 255, 1)',
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Homogenizer Speed',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 159, 64, 1)',
-                        pointBorderColor: 'rgba(255, 159, 64, 1)',
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Homogenizer Current',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 206, 86, 1)',
-                        pointBorderColor: 'rgba(255, 206, 86, 1)',
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Stirrer Current',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                        pointBorderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Exhaust Volume',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-                        pointBorderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    },
-                    {
-                        label: 'Manhole Position',
-                        data: [],
-                        borderWidth: 2,
-                        pointRadius: 3,
-                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-                        pointBorderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        fill: false,
-                        tension: 0.4 // Smooth curves
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 0 // Disable animations for better performance
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.0.0"></script>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Reactor Pressure',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    pointBorderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
                 },
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Timestamp'
-                        }
+                {
+                    label: 'Reactor Temperature',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Hot Oil In Target Temperature',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+                    pointBorderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Hot Oil In Temperature',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 159, 64, 1)',
+                    pointBorderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Hot Oil Out Temperature',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+                    pointBorderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Reactor Target Temperature',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Stirrer Target Speed',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Stirrer Speed',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    pointBorderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Homogenizer Target Speed',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(153, 102, 255, 1)',
+                    pointBorderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Homogenizer Speed',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 159, 64, 1)',
+                    pointBorderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Homogenizer Current',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+                    pointBorderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Stirrer Current',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Exhaust Volume',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                },
+                {
+                    label: 'Manhole Position',
+                    data: [],
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    pointBorderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false,
+                    tension: 0.4 // Smooth curves
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 0 // Disable animations for better performance
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Values'
+                    }
+                }
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
                     },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Values'
-                        }
+                    zoom: {
+                        wheel: {
+                            enabled: true
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy'
                     }
                 }
             }
-        });
-
-        let currentPage = 1;
-        let totalPages = 1;
-
-        function updatePaginationControls() {
-            document.getElementById('page-info').innerText = `Page ${currentPage} of ${totalPages}`;
-            document.getElementById('prev-page').disabled = currentPage === 1;
-            document.getElementById('next-page').disabled = currentPage === totalPages;
         }
+    });
 
-        function fetchData(page = 1) {
-            fetch(`{% url 'process_data_chart' %}?page=${page}`)
-                .then(response => response.json())
-                .then(data => {
-                    requestAnimationFrame(() => {
-                        myChart.data.labels = data.timestamps;
-                        myChart.data.datasets[0].data = data.p_reactor;
-                        myChart.data.datasets[1].data = data.t_reactor;
-                        myChart.data.datasets[2].data = data.t_hotoil_in_target;
-                        myChart.data.datasets[3].data = data.t_hotoil_in;
-                        myChart.data.datasets[4].data = data.t_hotoil_out;
-                        myChart.data.datasets[5].data = data.t_reactor_target;
-                        myChart.data.datasets[6].data = data.n_stirrer_target;
-                        myChart.data.datasets[7].data = data.n_stirrer;
-                        myChart.data.datasets[8].data = data.n_homog_target;
-                        myChart.data.datasets[9].data = data.n_homog;
-                        myChart.data.datasets[10].data = data.i_homog;
-                        myChart.data.datasets[11].data = data.i_stirrer;
-                        myChart.data.datasets[12].data = data.v_exh;
-                        myChart.data.datasets[13].data = data.pos_mh;
-                        myChart.update();
+    let currentPage = 1;
+    let totalPages = 1;
 
-                        currentPage = data.page;
-                        totalPages = data.num_pages;
-                        updatePaginationControls();
-                    });
-                })
-                .catch(error => console.error('Error fetching the data:', error));
-        }
+    function updatePaginationControls() {
+        document.getElementById('page-info').innerText = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById('prev-page').disabled = currentPage === 1;
+        document.getElementById('next-page').disabled = currentPage === totalPages;
+    }
 
-        function addData() {
-            const labelInput = document.getElementById('labelInput').value;
-            const valueInput = document.getElementById('valueInput').value;
-
-            if (labelInput && valueInput) {
+    function fetchData(page = 1) {
+        fetch(`{% url 'process_data_chart' %}?page=${page}`)
+            .then(response => response.json())
+            .then(data => {
                 requestAnimationFrame(() => {
-                    myChart.data.labels.push(labelInput);
-                    // Add values to specific datasets if necessary
+                    myChart.data.labels = data.timestamps;
+                    myChart.data.datasets[0].data = data.p_reactor;
+                    myChart.data.datasets[1].data = data.t_reactor;
+                    myChart.data.datasets[2].data = data.t_hotoil_in_target;
+                    myChart.data.datasets[3].data = data.t_hotoil_in;
+                    myChart.data.datasets[4].data = data.t_hotoil_out;
+                    myChart.data.datasets[5].data = data.t_reactor_target;
+                    myChart.data.datasets[6].data = data.n_stirrer_target;
+                    myChart.data.datasets[7].data = data.n_stirrer;
+                    myChart.data.datasets[8].data = data.n_homog_target;
+                    myChart.data.datasets[9].data = data.n_homog;
+                    myChart.data.datasets[10].data = data.i_homog;
+                    myChart.data.datasets[11].data = data.i_stirrer;
+                    myChart.data.datasets[12].data = data.v_exh;
+                    myChart.data.datasets[13].data = data.pos_mh;
                     myChart.update();
+
+                    currentPage = data.page;
+                    totalPages = data.num_pages;
+                    updatePaginationControls();
                 });
-            }
+            })
+            .catch(error => console.error('Error fetching the data:', error));
+    }
+
+    function addData() {
+        const labelInput = document.getElementById('labelInput').value;
+        const valueInput = document.getElementById('valueInput').value;
+
+        if (labelInput && valueInput) {
+            requestAnimationFrame(() => {
+                myChart.data.labels.push(labelInput);
+                // Add values to specific datasets if necessary
+                myChart.update();
+            });
         }
+    }
 
-        document.getElementById('prev-page').addEventListener('click', () => {
-            if (currentPage > 1) {
-                fetchData(currentPage - 1);
-            }
-        });
+    document.getElementById('prev-page').addEventListener('click', () => {
+        if (currentPage > 1) {
+            fetchData(currentPage - 1);
+        }
+    });
 
-        document.getElementById('next-page').addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                fetchData(currentPage + 1);
-            }
-        });
+    document.getElementById('next-page').addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            fetchData(currentPage + 1);
+        }
+    });
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            fetchData();
-        });
-    </script>
+    document.getElementById('zoom-in').addEventListener('click', () => {
+        myChart.zoom(1.1);
+    });
+
+    document.getElementById('zoom-out').addEventListener('click', () => {
+        myChart.zoom(0.9);
+    });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        fetchData();
+    });
+</script>
 {% endblock content %}

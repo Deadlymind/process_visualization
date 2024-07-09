@@ -1,0 +1,18 @@
+{% extends "partials/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Search Results</h2>
+    <div class="row">
+        {% if results %}
+            <ul class="list-group w-100">
+                {% for result in results %}
+                    <li class="list-group-item">{{ result.batch_no }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center">No results found</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,3 @@
-# urls.py
 from django.urls import path
 from .views import (
     GeneralDataListView, GeneralDataDetailView, GeneralDataCreateView,
@@ -8,17 +7,21 @@ from .views import (
     ProcessDataListView, ProcessDataDetailView, ProcessDataCreateView,
     ProcessDataUpdateView, ProcessDataDeleteView,
     UploadedFileListView, UploadedFileDetailView, UploadedFileCreateView,
-    UploadedFileUpdateView, UploadedFileDeleteView, UploadFileView
+    UploadedFileUpdateView, UploadedFileDeleteView, UploadFileView,
 )
+from chart.views import chart_view, process_data_chart
+
 
 urlpatterns = [
     path('', GeneralDataListView.as_view(), name='generaldata_list'),
     path('generaldata/<int:pk>/', GeneralDataDetailView.as_view(), name='generaldata_detail'),
     path('generaldata/create/', GeneralDataCreateView.as_view(), name='generaldata_create'),
-    path('generaldata/add/', GeneralDataCreateView.as_view(), name='generaldata_add'),  # Added this line
+    path('generaldata/add/', GeneralDataCreateView.as_view(), name='generaldata_add'),
     path('generaldata/update/<int:pk>/', GeneralDataUpdateView.as_view(), name='generaldata_update'),
     path('generaldata/delete/<int:pk>/', GeneralDataDeleteView.as_view(), name='generaldata_delete'),
     path('generaldata/edit/<int:pk>/', GeneralDataUpdateView.as_view(), name='generaldata_edit'),
+    
+    path('generaldata/<int:pk>/chart/', chart_view, name='generaldata_chart'), 
 
     path('processdataheader/', ProcessDataHeaderListView.as_view(), name='processdataheader_list'),
     path('processdataheader/<int:pk>/', ProcessDataHeaderDetailView.as_view(), name='processdataheader_detail'),
@@ -39,4 +42,6 @@ urlpatterns = [
     path('uploadedfile/delete/<int:pk>/', UploadedFileDeleteView.as_view(), name='uploadedfile_delete'),
 
     path('upload/', UploadFileView.as_view(), name='upload_file'),
+
+    path('process_data_chart/', process_data_chart, name='process_data_chart'),  # Ensure this is included
 ]

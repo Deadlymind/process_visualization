@@ -1,15 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from processV.models import ProcessData
+from processV.models import ProcessData, GeneralData
 from django.core.paginator import Paginator
 
-def chart_view(request):
-    return render(request, 'chart/chart.html')
+def chart_view(request, pk):
+    general_data = get_object_or_404(GeneralData, pk=pk)
+    context = {
+        'batch_no': general_data.batch_no,
+    }
+    return render(request, 'chart/chart.html', context)
 
 def process_data_chart(request):
     try:
         # Define the number of items per page
-        items_per_page = 100
+        items_per_page = 1000
 
         # Get the page number from the request
         page_number = request.GET.get('page', 1)
@@ -49,3 +53,11 @@ def process_data_chart(request):
         return JsonResponse(chart_data)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def search_view(request):
+    query = request.GET.get('search')
+    if query:
+        results = GeneralData.objects.filter(batch_no__icontains=query)
+    else:
+        results = GeneralData.objects.none()
+    return render(request, 'chart/search_results.html', {'results': results})

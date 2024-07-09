@@ -33,12 +33,15 @@
                             <a href="{% url 'generaldata_detail' data.pk %}" class="btn btn-primary btn-sm">View</a>
                             <a href="{% url 'generaldata_edit' data.pk %}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="{% url 'generaldata_delete' data.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{% url 'generaldata_chart' data.pk %}" class="btn btn-info btn-sm">View Chart</a>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
         <a href="{% url 'generaldata_add' %}" class="btn btn-success mt-4">Add New General Data</a>
+        <a href="/upload" class="btn btn-success mt-4">upload file</a>
+
     </div>
 
     <!-- Bootstrap JS and dependencies -->

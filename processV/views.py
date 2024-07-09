@@ -11,17 +11,14 @@ import traceback
 # GeneralData Views
 class GeneralDataListView(ListView):
     model = GeneralData
-    template_name = 'processV/generaldata_list.html'
+    template_name = 'general_data_list.html'
     context_object_name = 'general_data_list'
+    paginate_by = 10  # Optional: for pagination
 
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return GeneralData.objects.filter(
-                Q(sap_reactor_no__icontains=query) |
-                Q(reactor_name__icontains=query) |
-                Q(recipe_name__icontains=query)
-            )
+            return GeneralData.objects.filter(batch_no__icontains=query)
         return GeneralData.objects.all()
 
 class GeneralDataDetailView(DetailView):
@@ -43,7 +40,7 @@ class GeneralDataUpdateView(UpdateView):
 
 class GeneralDataDeleteView(DeleteView):
     model = GeneralData
-    template_name = 'processV/generaldata_confirm_delete.html'
+    template_name = 'processV/generaldata_confirm_delete.html'  # Ensure this matches the template path
     success_url = reverse_lazy('generaldata_list')
 
 # ProcessDataHeader Views
