@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Uploaded Files</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">File</th>
+                    <th scope="col">Uploaded At</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in uploaded_file_list %}
+                    <tr>
+                        <td><a href="{{ file.file.url }}">{{ file.file.name }}</a></td>
+                        <td>{{ file.uploaded_at }}</td>
+                        <td>
+                            <a href="{% url 'uploadedfile_detail' file.pk %}" class="btn btn-primary btn-sm">View</a>
+                            <a href="{% url 'uploadedfile_edit' file.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'uploadedfile_delete' file.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'uploadedfile_add' %}" class="btn btn-success mt-4">Upload New File</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

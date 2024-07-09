@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Excel File</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Upload Excel File</h1>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.file }}
+            <div id="batch-number-field" class="form-group" style="display:none;">
+                {{ form.batch_no }}
+            </div>
+            <button type="submit" name="action" value="upload_generaldata" class="btn btn-success mt-3">Upload General Data</button>
+            <button type="submit" name="action" value="update_processdata" class="btn btn-primary mt-3">Update Process Data</button>
+            <a href="{% url 'generaldata_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+        </form>
+        {% if error %}
+            <div class="alert alert-danger mt-3">{{ error }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+
+                // Show or hide batch number field based on button clicked
+                var generalDataBtn = document.querySelector('button[name="action"][value="upload_generaldata"]');
+                var processDataBtn = document.querySelector('button[name="action"][value="update_processdata"]');
+                var batchNumberField = document.getElementById('batch-number-field');
+
+                generalDataBtn.addEventListener('click', function() {
+                    batchNumberField.style.display = 'none';
+                });
+
+                processDataBtn.addEventListener('click', function() {
+                    batchNumberField.style.display = 'block';
+                });
+
+            }, false);
+        })();
+    </script>
+</body>
+</html>

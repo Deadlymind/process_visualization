@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General Data Detail</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">General Data Detail</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ general_data.reactor_name }} - {{ general_data.recipe_name }}</h5>
+                <p class="card-text"><strong>SAP Reactor No:</strong> {{ general_data.sap_reactor_no }}</p>
+                <p class="card-text"><strong>Reactor Type:</strong> {{ general_data.reactor_type }}</p>
+                <p class="card-text"><strong>SAP Material No:</strong> {{ general_data.sap_material_no }}</p>
+                <p class="card-text"><strong>Recipe ID:</strong> {{ general_data.recipe_id }}</p>
+                <p class="card-text"><strong>Recipe Version:</strong> {{ general_data.recipe_version }}</p>
+                <p class="card-text"><strong>Recipe Last Change:</strong> {{ general_data.recipe_last_change }}</p>
+
+                <!-- Add more fields as needed -->
+                <p class="card-text"><strong>Timestamp Recipe Start:</strong> {{ general_data.timestamp_recipe_start }}</p>
+                <p class="card-text"><strong>Timestamp Start Filling:</strong> {{ general_data.timestamp_start_filling }}</p>
+                <p class="card-text"><strong>Timestamp End Filling:</strong> {{ general_data.timestamp_end_filling }}</p>
+                <p class="card-text"><strong>Timestamp Start Reaction:</strong> {{ general_data.timestamp_start_reaction }}</p>
+                <p class="card-text"><strong>Timestamp End Reaction:</strong> {{ general_data.timestamp_end_reaction }}</p>
+                <p class="card-text"><strong>Timestamp Start Heating:</strong> {{ general_data.timestamp_start_heating }}</p>
+                <p class="card-text"><strong>Timestamp End Heating:</strong> {{ general_data.timestamp_end_heating }}</p>
+                <p class="card-text"><strong>Timestamp Start Cooling:</strong> {{ general_data.timestamp_start_cooling }}</p>
+                <p class="card-text"><strong>Timestamp End Cooling:</strong> {{ general_data.timestamp_end_cooling }}</p>
+                <p class="card-text"><strong>Timestamp Start Additivation:</strong> {{ general_data.timestamp_start_additivation }}</p>
+                <p class="card-text"><strong>Timestamp End Additivation:</strong> {{ general_data.timestamp_end_additivation }}</p>
+                <p class="card-text"><strong>Timestamp Start Sampling:</strong> {{ general_data.timestamp_start_sampling }}</p>
+                <p class="card-text"><strong>Timestamp End Sampling:</strong> {{ general_data.timestamp_end_sampling }}</p>
+                <p class="card-text"><strong>Timestamp Start Adjusting:</strong> {{ general_data.timestamp_start_adjusting }}</p>
+                <p class="card-text"><strong>Timestamp End Adjusting:</strong> {{ general_data.timestamp_end_adjusting }}</p>
+                <p class="card-text"><strong>Timestamp Recipe End:</strong> {{ general_data.timestamp_recipe_end }}</p>
+                <p class="card-text"><strong>Product 5 Before Batch:</strong> {{ general_data.product_5_before_batch }}</p>
+                <p class="card-text"><strong>Product 4 Before Batch:</strong> {{ general_data.product_4_before_batch }}</p>
+                <p class="card-text"><strong>Product 3 Before Batch:</strong> {{ general_data.product_3_before_batch }}</p>
+                <p class="card-text"><strong>Product 2 Before Batch:</strong> {{ general_data.product_2_before_batch }}</p>
+                <p class="card-text"><strong>Product Before Batch:</strong> {{ general_data.product_before_batch }}</p>
+                <p class="card-text"><strong>Product After Batch:</strong> {{ general_data.product_after_batch }}</p>
+                <p class="card-text"><strong>Site:</strong> {{ general_data.site }}</p>
+                <p class="card-text"><strong>Name of Site:</strong> {{ general_data.name_of_site }}</p>
+                <p class="card-text"><strong>Process Order No:</strong> {{ general_data.process_order_no }}</p>
+                <p class="card-text"><strong>Batch No:</strong> {{ general_data.batch_no }}</p>
+                <p class="card-text"><strong>Control Config 1:</strong> {{ general_data.control_config_1 }}</p>
+                <p class="card-text"><strong>Control Config 2:</strong> {{ general_data.control_config_2 }}</p>
+                <p class="card-text"><strong>Control Config 3:</strong> {{ general_data.control_config_3 }}</p>
+
+                <a href="{% url 'generaldata_edit' general_data.pk %}" class="btn btn-warning mt-3">Edit</a>
+                <a href="{% url 'generaldata_delete' general_data.pk %}" class="btn btn-danger mt-3">Delete</a>
+                <a href="{% url 'generaldata_list' %}" class="btn btn-primary mt-3">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General Data List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">General Data List</h1>
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'generaldata_list' %}" class="form-inline mb-4">
+            <input type="text" name="q" class="form-control mr-sm-2" placeholder="Search..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-outline-success">Search</button>
+        </form>
+        <!-- Data Table -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">SAP Reactor No</th>
+                    <th scope="col">Reactor Name</th>
+                    <th scope="col">Recipe Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in general_data_list %}
+                    <tr>
+                        <td>{{ data.sap_reactor_no }}</td>
+                        <td>{{ data.reactor_name }}</td>
+                        <td>{{ data.recipe_name }}</td>
+                        <td>
+                            <a href="{% url 'generaldata_detail' data.pk %}" class="btn btn-primary btn-sm">View</a>
+                            <a href="{% url 'generaldata_edit' data.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'generaldata_delete' data.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'generaldata_add' %}" class="btn btn-success mt-4">Add New General Data</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

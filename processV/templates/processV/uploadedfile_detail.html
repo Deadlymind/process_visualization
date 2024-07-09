@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Detail</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">File Detail</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">File: <a href="{{ uploaded_file.file.url }}">{{ uploaded_file.file.name }}</a></h5>
+                <p class="card-text"><strong>Uploaded At:</strong> {{ uploaded_file.uploaded_at }}</p>
+                <a href="{% url 'uploadedfile_edit' uploaded_file.pk %}" class="btn btn-warning mt-3">Edit</a>
+                <a href="{% url 'uploadedfile_delete' uploaded_file.pk %}" class="btn btn-danger mt-3">Delete</a>
+                <a href="{% url 'uploadedfile_list' %}" class="btn btn-primary mt-3">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
